@@ -1,8 +1,7 @@
 package com.weki.todorestapi.todo;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,5 +16,16 @@ public class TodoResource {
     @GetMapping("/users/{username}/todos")
     public List<Todo> retrieveTodos(@PathVariable String username) {
         return service.findByUsername(username);
+    }
+
+    @GetMapping("/users/{username}/todos/{todo_id}")
+    public Todo retrieveTodo(@PathVariable String username, @PathVariable Integer todo_id) {
+        return service.findById(todo_id);
+    }
+
+    @DeleteMapping("/users/{username}/todos/{todo_id}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable String username, @PathVariable Integer todo_id) {
+        service.deleteById(todo_id);
+        return ResponseEntity.noContent().build();
     }
 }
