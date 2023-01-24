@@ -5,9 +5,9 @@ import java.time.LocalDate;
 public class Todo {
 
 	public Todo() {
-		
+
 	}
-	
+
 	public Todo(int id, String username, String description, LocalDate targetDate, boolean done) {
 		super();
 		this.id = id;
@@ -20,7 +20,7 @@ public class Todo {
 	private int id;
 
 	private String username;
-	
+
 	private String description;
 	private LocalDate targetDate;
 	private boolean done;
