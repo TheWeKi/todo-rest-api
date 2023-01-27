@@ -18,14 +18,24 @@ public class TodoResource {
         return service.findByUsername(username);
     }
 
-    @GetMapping("/users/{username}/todos/{todo_id}")
-    public Todo retrieveTodo(@PathVariable String username, @PathVariable Integer todo_id) {
+    @GetMapping("/users/{ignoredUsername}/todos/{todo_id}")
+    public Todo retrieveTodo(@PathVariable String ignoredUsername, @PathVariable Integer todo_id) {
         return service.findById(todo_id);
     }
 
-    @DeleteMapping("/users/{username}/todos/{todo_id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable String username, @PathVariable Integer todo_id) {
+    @DeleteMapping("/users/{ignoredUsername}/todos/{todo_id}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable String ignoredUsername, @PathVariable Integer todo_id) {
         service.deleteById(todo_id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/users/{ignoredUsername}/todos/{ignoredTodoId}")
+    public void updateATodo(@PathVariable String ignoredUsername, @PathVariable Integer ignoredTodoId, @RequestBody Todo todo) {
+        service.updateTodo(todo);
+    }
+
+    @PostMapping("/users/{username}/todos")
+    public Todo createTodo(@PathVariable String username, @RequestBody Todo todo) {
+        return service.addTodo( username, todo.getDescription(), todo.getTargetDate(), false );
     }
 }
