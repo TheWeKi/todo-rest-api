@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class TodoService {
 
 	private static List<Todo> todos = new ArrayList<>();

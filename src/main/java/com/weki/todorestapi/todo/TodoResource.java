@@ -8,19 +8,19 @@ import java.util.List;
 @RestController
 public class TodoResource {
 
-    private final TodoService service;
-    public TodoResource(TodoService service) {
+    private final TodoRepository service;
+    public TodoResource(TodoRepository service) {
         this.service = service;
     }
 
     @GetMapping("/users/{username}/todos")
     public List<Todo> retrieveTodos(@PathVariable String username) {
-        return service.findByUsername(username);
+        return service.findAllByUsername(username);
     }
 
     @GetMapping("/users/{ignoredUsername}/todos/{todo_id}")
     public Todo retrieveTodo(@PathVariable String ignoredUsername, @PathVariable Integer todo_id) {
-        return service.findById(todo_id);
+        return service.findById(todo_id).orElse(null);
     }
 
     @DeleteMapping("/users/{ignoredUsername}/todos/{todo_id}")
@@ -29,13 +29,17 @@ public class TodoResource {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/users/{ignoredUsername}/todos/{ignoredTodoId}")
-    public void updateATodo(@PathVariable String ignoredUsername, @PathVariable Integer ignoredTodoId, @RequestBody Todo todo) {
-        service.updateTodo(todo);
+    @PutMapping("/users/{username}/todos/{todo_id}")
+    public void updateATodo(@PathVariable String username, @PathVariable Integer todo_id, @RequestBody Todo todo) {
+        todo.setId(todo_id);
+        todo.setUsername(username);
+        service.save(todo);
     }
 
     @PostMapping("/users/{username}/todos")
     public Todo createTodo(@PathVariable String username, @RequestBody Todo todo) {
-        return service.addTodo( username, todo.getDescription(), todo.getTargetDate(), false );
+        todo.setId(null);
+        todo.setUsername(username);
+        return service.save(todo);
     }
 }
